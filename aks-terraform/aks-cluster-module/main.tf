@@ -1,21 +1,3 @@
-terraform {
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "=3.0.0"
-    }
-  }
-}
-
-provider "azurerm" {
-    features {}
-    client_id       = ""
-    client_secret   = ""
-    subscription_id = "bd8fb8ff-0e7a-4bea-88c2-1a1311814533"
-    tenant_id       = "47d4542c-f112-47f4-92c7-a838d8a5e8ef"
-    skip_provider_registration = "true"
-}
-
 resource "azurerm_kubernetes_cluster" "aks_cluster" {
   name                = var.aks_cluster_name
   location            = var.cluster_location

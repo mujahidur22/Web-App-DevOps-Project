@@ -11,8 +11,8 @@ provider "azurerm" {
     features {}
     client_id       = var.client_id
     client_secret   = var.client_secret
-    subscription_id = "bd8fb8ff-0e7a-4bea-88c2-1a1311814533"
-    tenant_id       = "47d4542c-f112-47f4-92c7-a838d8a5e8ef"
+    subscription_id = var.subscription_id
+    tenant_id       = var.tenant_id
     skip_provider_registration = "true"
 }
 
@@ -29,8 +29,8 @@ module "aks_cluster" {
     cluster_location           = "UK South"
     dns_prefix                 = "myaks-project"
     kubernetes_version         = "1.26.6"
-    service_principal_client_id       = "service-principal"
-    service_principal_client_secret   = "dff3fcec-6b58-4035-9f2b-385e242e0caa"
+    service_principal_client_id       = var.client_id
+    service_principal_client_secret   = var.client_secret
     resource_group_name         = module.networking.networking_resource_group_name
     vnet_id                     = module.networking.vnet_id
     control_plane_subnet_id     = module.networking.control_plane_subnet_id

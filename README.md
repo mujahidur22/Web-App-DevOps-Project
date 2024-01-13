@@ -140,6 +140,41 @@ The following output variables are defined:
 - A `aks_cluster_id` variable that will store the ID of the cluster
 - A `aks_kubeconfig` variable that will capture the Kubernetes configuration file of the cluster. This file is essential for interacting with and managing the AKS cluster using `kubectl`.
 
+## Creating the AKS Cluster with IaC
+
+Having configured the networking module and the aks cluster module, it now needs to be brought together to create the AKS Cluster with IaC.
+
+**`main.tf` and `variables.tf`**
+
+In the `main.tf` configuration file in the base directory of the project we define the Azure provider block to enable authentication to Azure using service principal credentials. The input variables for the client_id and client_secret arguments are defined in a `variables.tf` file, and then equivalent environment variables are created to store the values without exposing credentials.
+
+## Integration
+
+### Networking Module
+
+After provisioning the provider block it's time to integrate the networking module in the project's main configuration file. This integration will ensure that the networking resources previously defined in their respective module are included, and therefore accessible in the main project.
+
+The networking module is called with the following variables:
+
+- `resource_group_name`
+- `location` set to UK South
+- `vnet_address_space` set to ["10.0.0.0/16"]
+
+### Cluster Module
+
+Integrating the cluster module in the main project configuration file connects the AKS cluster specifications to the main project, as well as allowing to provision the cluster within the previously defined networking infrastructure.
+
+The cluster module is called with variables: 
+
+- Set `cluster_name` to "terraform-aks-cluster"
+- Set `location` to an Azure region that is geographically close to you to improve latency (e.g."UK South")
+- Set `dns_prefix` to "myaks-project"
+- Set `kubernetes_version` to a Kubernetes version supported by AKS, such as "1.26.6"
+- Set `service_principal_client_id` and `service_principal_secret` to service principal credentials
+- We use variables referencing the output variables from the networking module for the other input variables required by the cluster module such as: `resource_group_name`, `vnet_id`, `control_plane_subnet_id`, `worker_node_subnet_id` and `aks_nsg_id`
+
+Following these steps, we use `terraform init` and `terraform apply` to initialise the terraform project.
+
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
