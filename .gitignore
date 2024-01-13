@@ -1,0 +1,4 @@
+/aks-terraform/.terraform
+/aks-terraform/aks-cluster-module/.terraform
+/aks-terraform/networking-module/.terraform
+/aks-terraform.terraform.lock.hcl
