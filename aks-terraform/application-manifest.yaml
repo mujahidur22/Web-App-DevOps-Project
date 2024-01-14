@@ -13,8 +13,8 @@ spec:
         app: flask-app
     spec:
       containers:
-      - name: mujahidur22/orders
-        image: mujahidur22/orders:v1.0
+      - name: app-container
+        image: mujahidur22/orders:latest
         ports:
         - containerPort: 5000
   strategy:
