@@ -213,6 +213,22 @@ The application was tested using the port-forwarding process by making the appli
 
 To proceed with distributing the application internally, we would go forward with the Autoscaling with Horizontal Pod Autoscaler (HPA) method. This method automatically adjusts the number of active pods based on CPU or memory usage whcih is ideal in reducing costs whilst still enabling full functionality. For external access, the ingress controller can be used to route external traffic to the cluster to enable access to the application.
 
+## CI/CD Pipeline with Azure DevOps
+
+### Configurations
+
+To begin with, the Azure DevOps project is initialised and linked to this GitHub repository. This will allow the project to be kept up to date throughout. We then create a Service Connection with Docker Hub so we can work with the Docker image. An AKS Service connecton is also established.
+
+We begin with creating a Starter Pipeline. Within the YAML file, `azure-pipelines.yml`, we create a Docker Task to locate the Docker Image and `buildAndPush` command with the tag `latest`. 
+
+Thenext step is to **Deploy to Kubernetes**. We do this with another task. Connecting to the previously established AKS service connection, we identify the cluster and the location of the already created manifest file to deploy the application to kubernetes.
+
+### Validation
+
+To test the deployment, we check the status of the pods that have been created, and use the port-forwarding command to check that the deployment has been successful and all aspects of the application work. The command `kubectl port-forward deployment/flask-app-deployment 5000:5000` exposes the deployment to port 5000 allowing access through the URL `127.0.0.1:5000` to the application.
+
+The successful access suggests an effective use of the CI/CD pipeline.
+
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
