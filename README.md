@@ -229,6 +229,42 @@ To test the deployment, we check the status of the pods that have been created, 
 
 The successful access suggests an effective use of the CI/CD pipeline.
 
+## AKS Cluster Monitoring
+
+### Metric Explorer Charts
+
+We are using  Metrics Explorer charts to monitor the AKS cluster. The charts we use are:
+
+- **Average Node CPU Usage**: This chart allows you to track the CPU usage of your AKS cluster's nodes. Monitoring CPU usage helps ensure efficient resource allocation and detect potential performance issues.
+- **Average Pod Count**: This chart displays the average number of pods running in your AKS cluster. It's a key metric for evaluating the cluster's capacity and workload distribution.
+- **Used Disk Percentage**: Monitoring disk usage is critical to prevent storage-related issues. This chart helps you track how much disk space is being utilized.
+- **Bytes Read and Written per Second**: Monitoring data I/O is crucial for identifying potential performance bottlenecks. This chart provides insights into data transfer rates.
+
+### Log Analytics
+
+Log Analytics offers a wide range of capabilities, from simple queries that filter, sort, and analyze records to advanced queries that perform statistical analyses, allowing you to visualize trends and patterns within your data.
+
+- **Average Node CPU Usage Percentage per Minute**: This configuration captures data on node-level usage at a granular level, with logs recorded per minute
+- **Average Node Memory Usage Percentage per Minute**: Similar to CPU usage, tracking memory usage at node level allows you to detect memory-related performance concerns and efficiently allocate resources
+- **Pods Counts with Phase**: This log configuration provides information on the count of pods with different phases, such as Pending, Running, or Terminating. It offers insights into pod lifecycle management and helps ensure the cluster's workload is appropriately distributed.
+- **Find Warning Value in Container Logs**: By configuring Log Analytics to search for warning values in container logs, you proactively detect issues or errors within your containers, allowing for prompt troubleshooting and issues resolution
+- **Monitoring Kubernetes Events**: Monitoring Kubernetes events, such as pod scheduling, scaling activities, and errors, is essential for tracking the overall health and stability of the cluster
+
+### Alarms
+
+Alarms are set to ensure we can detect and address issues promptly, reducing the risk of disruptions and optimizing the performance of the application. The 3 alarms set are: 
+
+- **CPU Usage Percentage**: At 90%, the alarm is triggered. This alert is vital because it helps to proactively detect and address potential disk issues that could lead to performance degradation and service interruptions. The alert checks every 5 minutes and has a loopback period of 15 minutes.
+- **Memory Working Set Percentage** & **Disk Used Percentage**: At 80%, the alarm is triggered for both conditions. CPU and memory are critical resources in the AKS cluster. When they are heavily utilized, it can lead to decreased application performance. By setting alert rules to trigger at 80%, when these resources are approaching critical levels, we are notified.
+
+### Responding to Alarms
+
+Setting up alarms for your AKS cluster is just the first step in effective monitoring. Once the alerts are in place, it's crucial to have a well-defined response plan to address issues promptly and efficiently. 
+
+When specific alarms are triggered, there are some options to proceed with minimal disruption. These include scaling resources, allocating additional capacity, troubleshoot potential issues, and maintain the operational efficiency of the AKS cluster.
+
+Scaling resources through Horizontal Pod Autoscaler aloows to montior he resource demand and automatically scale the number of pods.
+
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
