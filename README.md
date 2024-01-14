@@ -265,9 +265,21 @@ When specific alarms are triggered, there are some options to proceed with minim
 
 Scaling resources through Horizontal Pod Autoscaler aloows to montior he resource demand and automatically scale the number of pods.
 
+## AKS Integration with Azure Key Vault for Secrets Management
+
+To configure the Azure Key Vault, I assigned myself as a Key Vault Administrator so that the secrets could be assigned. 4 secrets were created, `server-name`, `database-name`, `server-username` and `server-password`. These were all assigned using previously hardcoded credentials.
+
+All of the above secrets are essential for the application to connect to the database in order for the application to run. The use of secrets allows for these credentials to remain unknown to the user to provide additional security.
+
+We then enabled Managed Identity for the AKS Cluster to allow it to authenticate and interact securely with the Key Vault. We then assign the Key Vault Secrets Officer role to the managed identity associated with AKS, allowing it to retrieve and manage secrets.
+
+To use the secrets created, we integrate the Azure Identity and Azure Key Vault libraries into the Python application code to facilitate communication with Azure Key Vault. The code is to use managed identity credentials, ensuring secure retrieval of database connection details from the Key Vault.
+
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
+
+- [Mohammed Rahman]([https://github.com/yourusername](https://github.com/mujahidur22))
 
 ## License
 
