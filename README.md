@@ -175,6 +175,44 @@ The cluster module is called with variables:
 
 Following these steps, we use `terraform init` and `terraform apply` to initialise the terraform project.
 
+## Kubernetes Deployment to AKS
+
+### Deployment and Service Manifests
+
+**Deployment**
+
+We created a Kubernetes manifest file, named application-manifest.yaml. Inside this file the necessary Deployment resource is defined, which will help deploy the containerized web application onto the Terraform-provisioned AKS cluster. The manifest includes the following:
+
+- A Deployment named `flask-app-deployment` that acts as a central reference for managing the containerized application.
+- The application should concurrently run on two `replicas` within the AKS cluster, allowing for scalability and high availability
+- The label `app: flask-app`. This uniquely identifies the application and will allow Kubernetes to identify which pods the Deployment should manage.
+- This label in the metadata section is used to mark the pods created by the Deployment, establishing a clear connection between the pods and the application being managed.
+- The manifest is directed to the specific container and image which is hosted on Docker Hub
+- Port 5000 is exposed for communication within the AKS cluster. This port servers as the gateway for accessing the application's user interface, as defined in the application code
+- The Rolling Updates deployment strategy, facilitating seamless application updates.
+- Ensuring that, during updates, a maximum of one pod deploys while one pod becomes temporarily unavailable, maintaining application availability.
+
+**Service**
+
+The Kubernetes Service manifest is extended to facilitate internal communication within the AKS cluster. This manifest achieves the following key objectives:
+
+- A service named `flask-app-service` acts as a reference for routing internal communication
+- The selector matches the labels (`app: flask-app`) of the previously defined pods in the Deployment manifest. This alignment guarantees that the traffic is efficiently directed to the appropriate pods, maintaining seamless internal communication within the AKS cluster.
+- Configure the service to use TCP protocol on `port 80` for internal communication within the cluster. The targetPort should be set to `5000`, which corresponds to the port exposed by your container.
+- Set the service type to `ClusterIP`, designating it as an internal service within the AKS cluster
+
+### Deployment Strategy
+
+We have chose the **Rolling Updates* strategy. The reason is that the strategy allows for continuous updates with minimal downtime. This is essential as the application is constantly in use and not ideal if downtime is excessive. It allows for gradual replacement which again is ideal for improvements. The application is always available to users during updates. Kubernetes will automatically perform health checks on the deployment.
+
+### Testing and Validation
+
+The application was tested using the port-forwarding process by making the application available on the port 5000. The application was then run and all features were tested to ensure that the application has full functionality in the deployment environment.
+
+### Internal Distribution
+
+To proceed with distributing the application internally, we would go forward with the Autoscaling with Horizontal Pod Autoscaler (HPA) method. This method automatically adjusts the number of active pods based on CPU or memory usage whcih is ideal in reducing costs whilst still enabling full functionality. For external access, the ingress controller can be used to route external traffic to the cluster to enable access to the application.
+
 ## Contributors 
 
 - [Maya Iuga]([https://github.com/yourusername](https://github.com/maya-a-iuga))
