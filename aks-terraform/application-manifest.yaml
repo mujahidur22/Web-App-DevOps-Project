@@ -13,7 +13,7 @@ spec:
         app: flask-app
     spec:
       containers:
-      - name: dockerfile
+      - name: mujahidur22/orders
         image: mujahidur22/orders:v1.0
         ports:
         - containerPort: 5000
